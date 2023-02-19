@@ -1,0 +1,109 @@
+extends ../layouts/kemmie.pug
+
+block content
+        .row
+            .col-lg-6
+                h1 Khẩu quyết chiến thắng
+                h6 console.log
+                h6 nắm rõ luồng nó đi từ đâu sang đâu
+                h6 đọc lỗi cẩn thận để tìm nhanh
+                h6 không biết gì thì search http://www.google.com/
+
+                br
+                br
+
+            .col-lg-6
+                h1 Khẩu quyết Debug
+                h6 F10 để chạy từng dòng
+                h6 F9 để chui vào hàm
+                h6 F11 để chạy sang hàm tiếp theo
+                h6 Shift F11 để nhảy ra ngoài hàm
+                h6 F8 để tắt debug
+
+                br
+                br
+
+        form(action="/users/search", method="GET")
+            input(class="form-control" type="text", name="q")
+            button Search
+        br
+        br
+        table.table
+            thead
+                tr
+                    th Name
+                    th Avatar
+                    th Phone
+                    th Email
+                    th Password
+                    th Action
+            tbody
+
+        //-     each user in users
+        //-         tr
+        //-             td=user.name
+        //-             td
+        //-                 img(src=user.avatar, width="100")
+        //-             td=user.phone
+        //-             td=user.email
+        //-             td=user.password
+        //-             td
+        //-                 a.btn.btn-light(href="/users/" + user._id) View
+        //-                 a.btn.btn-danger(href="/users/update/" + user._id) Update
+        //-                 a.btn.btn-primary(href="/users/delete/" + user._id) Delete
+        //-                 a.btn.btn-light(href="/cart/add/" + user._id) Add
+        //- ul.pagination
+        //-     li
+        //-         a(href='/users') 1
+        //-     li
+        //-         a(href='/users?page=2') 2
+        //-     li
+        //-         a(href='/users?page=3') 3
+        //-     li
+        //-         a(href='/users?page=4') 4
+        a(class="btn btn-primary" href="/users/create") Create
+        a(class="btn btn-danger" href="/auth/login") Login
+
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+        script.
+            $(document).ready(function() {
+                $.ajax({
+                    url: 'api/users',
+                    dataType: 'JSON',
+                    method: 'GET',
+                    beforeSend() {
+
+                    },
+                    complete() {
+
+                    },
+                    success(result) {
+                       if(result){
+                            $.each(result, function(index, elements) {
+                                var tr = `
+                                    <tr>
+                                        <td>${elements.name}</td>
+                                        <td>
+                                            <img width="100" src="${elements.avatar}" alt="">
+                                        </td>
+                                        <td>${elements.phone}</td>
+                                        <td>${elements.email}</td>
+                                        <td>${elements.password}</td>
+                                        <td>
+                                            <button class="removeBtn" product-id="${elements.id}">Remove</button>
+                                            <button><a href="form-update.html?product_id=${elements.id}">Update</a></button>
+                                        </td>
+                                    </tr>
+                                `; 
+                                
+                                $('tbody').append(tr);            
+                                            
+                            });
+                         }
+                    },
+                    error(err, mes) {
+                        console.log(mes);
+                        debugger;
+                    }
+                });
+            });
