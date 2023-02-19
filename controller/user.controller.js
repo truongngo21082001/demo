@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const shortid = require('shortid');
-var db = require('../db');
+var db = require('../../db');
 
 module.exports.index = function(req, res) {
     res.render('users/index', {
